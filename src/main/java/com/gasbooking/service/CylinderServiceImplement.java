@@ -11,7 +11,7 @@ import com.gasbooking.exception.CylinderNotFoundException;
 import com.gasbooking.repository.ICylinderRepository;
 
 @Service
-public  class CylinderServiceImplement implements IServiceCylinder{
+public   class CylinderServiceImplement implements IServiceCylinder{
 	@Autowired
 	ICylinderRepository cylinderrepository;
 
@@ -63,6 +63,31 @@ public  class CylinderServiceImplement implements IServiceCylinder{
 	     throw new CylinderNotFoundException("Cylinder detalis not found");
       }
 	}
+
+	@Override
+	public void deleteById(int id) {
+		
+		
+	}
+
+	@Override
+	public Optional<Cylinder> getCylinder(String type) {
+
+		return null;
+	}
+
+	@Override
+	public List<Cylinder> viewCylinder() {
+	
+		return null;
+	}
+
+	@Override
+	public Cylinder getCylinder(int id) {
+	
+		return null;
+	}
+
 }
 	
 
