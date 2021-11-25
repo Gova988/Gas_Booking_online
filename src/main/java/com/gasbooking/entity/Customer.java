@@ -1,79 +1,78 @@
 package com.gasbooking.entity;
 
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.CascadeType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.validation.constraints.NotBlank;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 //import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 //import javax.validation.constraints.Size;
 
-public class Customer extends AbstractUser {
-	@Id
-	@GeneratedValue
-	private int customerId;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+@Entity
+@Table(name = "customer")
+@PrimaryKeyJoinColumn(name = "customer_id")
+public class Customer extends AbstractUser implements Serializable {
 
-//	@NotBlank(message = "Account number can't be empty.")
-//	@NotNull
-//	@Size(min = 5, max = 10)
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 195158816166559020L;
+
+	// data members
+
+	@NotNull
+	@Column(name = "account_no")
 	private int accountNo;
 
-//	@NotBlank(message = "IFSC No can't be empty.")
 	@Pattern(regexp = "^[A-Z]{4}0[0-9]{6,7}$", message = "Given IFSC No. is not valid.")
+	@Column(name = "ifsc_no")
 	private String ifscNo;
 
-//	@NotBlank(message = "PAN no. can't be empty")
 	@Pattern(regexp = "^[A-Z]{5}[0-9]{4}[A-Z]{1}$", message = "Given PAN No. is not valid.")
+	@Column(name = "pan")
 	private String pan;
 
+	@JsonManagedReference(value = "1")
 	@OneToOne(targetEntity = Cylinder.class, cascade = CascadeType.ALL)
+	@JoinColumn(name = "cylinder_id")
 	private Cylinder cylinder;
 
+	@JsonManagedReference(value = "2")
 	@OneToOne(targetEntity = Bank.class, cascade = CascadeType.ALL)
+	@JoinColumn(name = "bank_id")
 	private Bank bank;
+	
+	@JsonManagedReference("4")
+	@OneToMany(targetEntity = GasBooking.class, cascade = CascadeType.ALL, mappedBy = "customer")
+	private List<GasBooking> gasBooking = new ArrayList<>();
 
 	// constructors
 	public Customer() {
 		super();
 	}
 
-	public Customer(int customerId, int accountNo,
-			@NotBlank(message = "IFSC No can't be empty.") @Pattern(regexp = "^[A-Z]{4}0[0-9]{6,7}") String ifscNo,
-			@NotBlank(message = "PAN no. can't be empty") @Pattern(regexp = "[A-Z]{5}[0-9]{4}[A-Z]{1}", message = "Given PAN No. is not valid.") String pan,
+	// getters and setters
+	
+	public Customer(@NotNull int accountNo,
+			@Pattern(regexp = "^[A-Z]{4}0[0-9]{6,7}$", message = "Given IFSC No. is not valid.") String ifscNo,
+			@Pattern(regexp = "^[A-Z]{5}[0-9]{4}[A-Z]{1}$", message = "Given PAN No. is not valid.") String pan,
 			Cylinder cylinder, Bank bank) {
 		super();
-		this.customerId = customerId;
 		this.accountNo = accountNo;
 		this.ifscNo = ifscNo;
 		this.pan = pan;
 		this.cylinder = cylinder;
-		this.bank = bank;
-	}
-
-	// getters and setters
-	public int getCustomerId() {
-		return customerId;
-	}
-
-	public void setCustomerId(int customerId) {
-		this.customerId = customerId;
-	}
-
-	public Cylinder getCylinder() {
-		return cylinder;
-	}
-
-	public void setCylinder(Cylinder cylinder) {
-		this.cylinder = cylinder;
-	}
-
-	public Bank getBank() {
-		return bank;
-	}
-
-	public void setBank(Bank bank) {
 		this.bank = bank;
 	}
 
@@ -101,9 +100,36 @@ public class Customer extends AbstractUser {
 		this.pan = pan;
 	}
 
+	public Cylinder getCylinder() {
+		return cylinder;
+	}
+
+	public void setCylinder(Cylinder cylinder) {
+		this.cylinder = cylinder;
+	}
+
+	public Bank getBank() {
+		return bank;
+	}
+
+	public void setBank(Bank bank) {
+		this.bank = bank;
+	}
+
+	public List<GasBooking> getGasBooking() {
+		return gasBooking;
+	}
+
+	public void setGasBooking(List<GasBooking> gasBooking) {
+		this.gasBooking = gasBooking;
+	}
+
+	// toString
+	
 	@Override
 	public String toString() {
-		return "Customer [customerId=" + customerId + ", cylinder=" + cylinder + ", bank=" + bank + ", accountNo="
-				+ accountNo + ", ifscNo=" + ifscNo + ", pan=" + pan + "]";
+		return "Customer [accountNo=" + accountNo + ", ifscNo=" + ifscNo + ", pan=" + pan + ", cylinder=" + cylinder
+				+ ", bank=" + bank + "]";
 	}
+
 }
