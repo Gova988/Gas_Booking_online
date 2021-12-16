@@ -62,6 +62,19 @@ public List<Cylinder> viewCylinderByType(String type) throws CylinderNotFoundExc
      throw new CylinderNotFoundException("Cylinder detalis not found");
   }
 }
+	@Override
+	public Cylinder viewCylinder(int cylinderId) throws CylinderNotFoundException {
+		
+		Optional<Cylinder> optional=cylinderrepository.findById(cylinderId);
+		if(optional.isPresent()) {
+			Cylinder getCylinder=optional.get();
+			
+			return getCylinder;
+		}
+		else {
+			throw new CylinderNotFoundException(" Cylinder details not found");
+		}
+	}
 }
 
 
