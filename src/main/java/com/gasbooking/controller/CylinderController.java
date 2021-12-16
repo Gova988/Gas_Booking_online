@@ -52,6 +52,10 @@ import com.gasbooking.service.ICylinderService;
 		return new ResponseEntity<List<Cylinder>>(viewCylinders, HttpStatus.OK);
 
 	}	
-
+        @GetMapping("/getSingleCylinder/{cylinderId}")
+	public ResponseEntity<?> viewCylinder(@PathVariable int cylinderId) throws CylinderNotFoundException {
+		Cylinder getCylinder = cylinderService.viewCylinder(cylinderId);
+		return new ResponseEntity <Cylinder>(getCylinder, HttpStatus.OK);
+	}
 
 }
