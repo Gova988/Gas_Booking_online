@@ -16,6 +16,7 @@ public Cylinder insertCylinder(Cylinder cylinder);
     public Cylinder deleteCylinder(int cylinderId) throws CylinderNotFoundException ;
     
     public List<Cylinder> viewCylinderByType(String type) throws CylinderNotFoundException;
+        public Cylinder viewCylinder(int cylinderId) throws CylinderNotFoundException;
 
 	
     
